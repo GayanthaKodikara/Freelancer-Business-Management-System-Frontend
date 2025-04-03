@@ -1,51 +1,65 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Table } from 'react-bootstrap';
+import AddEmployee from '../components/addEmployee';
+
 
 function EmployeeMng() {
-    const [employees, setEmployees] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
+    const [employees, setEmployees] = useState([]);
     useEffect(() => {
         const fetchEmployees = async () => {
-            setLoading(true);
             try {
-                const backendUrl = import.meta.env.VITE_BACKEND_URL; // or process.env.REACT_APP_BACKEND_URL
-                const response = await axios.get(`${backendUrl}/employees`); // Adjust the endpoint as needed
-
-                setEmployees(response.data);
-                setLoading(false);
-            } catch (err) {
-                setError(err);
-                setLoading(false);
+                const backendUrl = import.meta.env.VITE_BACKEND_URL;
+                const response = await axios.get(`${backendUrl}/employees`);
+                setEmployees(response.data); //Updating State with Fetched Data
+            }
+            catch (error) {
+                console.error("Error fetching employees:", error);
             }
         };
 
         fetchEmployees();
     }, []);
 
-    if (loading) {
-        return <div>Loading employees...</div>;
-    }
-
-    if (error) {
-        return <div>Error fetching employees: {error.message}</div>;
-    }
-
     return (
         <div>
+
+            <AddEmployee></AddEmployee>
+
             <h1>Employee List</h1>
-            {employees.length > 0 ? (
-                <ul>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Emp. ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Workshop Name</th>
+                        <th>Design Category</th>
+                        <th>Address</th>
+                        <th>Birthday</th>
+                        <th>Email</th>
+                        <th>NIC</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {employees.map((employee) => (
-                        <li key={employee.emp_id}>
-                            {employee.first_name} - {employee.last_name} - {employee.workshop_name} - {design_category}
-                        </li>
+                        <tr key={employee.emp_id}>
+                            <td>{employee.emp_id}</td>
+                            <td>{employee.first_name}</td>
+                            <td>{employee.last_name}</td>
+                            <td>{employee.workshop_name}</td>
+                            <td>{employee.design_category}</td>
+                            <td>{employee.address}</td>
+                            <td>{new Date(employee.birth_day).toLocaleDateString()}</td>
+                            <td>{employee.email}</td>
+                            <td>{employee.nic}</td>
+                            <td>{employee.role}</td>
+                        </tr>
                     ))}
-                </ul>
-            ) : (
-                <p>No employees found.</p>
-            )}
+                </tbody>
+            </Table>
         </div>
     );
 }

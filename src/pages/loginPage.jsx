@@ -80,10 +80,6 @@ function Login() {
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-
-                    {/* {error && <div className="text-danger">{error}</div>}
-                    {success && <div className="text-success">{success}</div>} */}
-
                 </Form>
             </Card>
         </Container>

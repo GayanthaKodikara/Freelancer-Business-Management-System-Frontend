@@ -1,5 +1,4 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
 import Login from './pages/loginPage';
 import EmployeeMng from './pages/employeeManagement';
 import InventoryMng from './pages/inventoryManagement';

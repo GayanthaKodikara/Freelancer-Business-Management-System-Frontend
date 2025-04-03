@@ -1,3 +1,4 @@
+import AddEmployee from "../components/addEmployee";
 
 
 
@@ -5,7 +6,8 @@
 function InventoryMng() {
     return (
         <div>
-            <h1>Hello Inventory</h1>
+            
+            <h1>Hello</h1>
 
         </div>
     );
