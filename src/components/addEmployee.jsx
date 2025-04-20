@@ -32,7 +32,7 @@ function AddEmployee() {
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
         try {
-            const response = await axios.post(`${backendUrl}/add_employee`, {
+            const response = await axios.post(`${backendUrl}/employees`, {
                 empId: values.empId,
                 first_name: values.firstName,
                 last_name: values.lastName,
@@ -43,6 +43,7 @@ function AddEmployee() {
                 email: values.email,
                 nic: values.nic,
                 role: values.role,
+                permission: 'TRUE'
             });
 
             console.log('Employee added successfully:', response.data);
@@ -160,9 +161,7 @@ function AddEmployee() {
                         </Form.Select>
                     </Form.Group>
                 </Row>
-                <Row className="mb-3">
-
-                </Row>
+                
                 <Button variant="primary" type="submit">
                     Add Employee
                 </Button>
