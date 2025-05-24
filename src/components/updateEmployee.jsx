@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Form from 'react-bootstrap/Form'; 
+import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -20,6 +20,7 @@ function UpdateEmployee() {
     email: '',
     nic: '',
     role: '',
+    resetPassword: false, // Initialize resetPassword state
   });
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -38,6 +39,7 @@ function UpdateEmployee() {
           email: response.data.email,
           nic: response.data.nic,
           role: response.data.role,
+          resetPassword: false, // Reset checkbox state when fetching employee
         });
       } catch (error) {
         console.error('Error fetching employee:', error);
@@ -49,16 +51,17 @@ function UpdateEmployee() {
   }, [empId, backendUrl]);
 
   const handleChange = (event) => {
+    const { name, type, checked, value } = event.target;
     setValues({
       ...values,
-      [event.target.name]: event.target.value,
+      [name]: type === 'checkbox' ? checked : value,
     });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.put(`${backendUrl}/employees/${values.empId}`, {
+      const dataToUpdate = {
         first_name: values.firstName,
         last_name: values.lastName,
         workshop_name: values.workshopName,
@@ -68,7 +71,13 @@ function UpdateEmployee() {
         email: values.email,
         nic: values.nic,
         role: values.role,
-      });
+      };
+
+      if (values.resetPassword) {
+        dataToUpdate.password = values.nic; 
+      }
+
+      await axios.put(`${backendUrl}/employees/${values.empId}`, dataToUpdate);
       alert('Employee updated successfully!');
       navigate('/employeeManagement');
     } catch (error) {
@@ -81,11 +90,13 @@ function UpdateEmployee() {
     <div>
       <h1>Update Employee</h1>
       <Form onSubmit={handleSubmit}>
-        <Row className="mb-3">
-          <Form.Group as={Col} md="4">
-            <Form.Label>Employee ID</Form.Label>
-            <Form.Control type="text" name="empId" value={values.empId} readOnly />
+        <Row className="mb-4 mt-4">
+          <Form.Group as={Col} md="12">
+            <Form.Label>Employee ID = {values.empId}</Form.Label>
           </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
           <Form.Group as={Col} md="4">
             <Form.Label>First name</Form.Label>
             <Form.Control
@@ -96,13 +107,47 @@ function UpdateEmployee() {
             />
           </Form.Group>
           <Form.Group as={Col} md="4">
-            <Form.Label>Last name</Form.Label>
+            <Form.Label>Other names</Form.Label>
             <Form.Control
               type="text"
               name="lastName"
               value={values.lastName}
               onChange={handleChange}
             />
+          </Form.Group>
+          <Form.Group as={Col} md="4">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              type="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+            />
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} md="6">
+            <Form.Label>Address</Form.Label>
+            <Form.Control
+              type="text"
+              name="address"
+              value={values.address}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group as={Col} md="3">
+            <Form.Label>Birthday</Form.Label>
+            <Form.Control
+              type="date"
+              name="birthday"
+              value={values.birthday}
+              onChange={handleChange}
+            />
+          </Form.Group>
+          <Form.Group as={Col} md="3">
+            <Form.Label>NIC</Form.Label>
+            <Form.Control type="text" name="nic" value={values.nic} onChange={handleChange} />
           </Form.Group>
         </Row>
 
@@ -144,40 +189,12 @@ function UpdateEmployee() {
           </Form.Group>
         </Row>
 
-        <Row className="mb-3">
+        <Row className="mb-3 mt-4">
           <Form.Group as={Col} md="6">
-            <Form.Label>Address</Form.Label>
-            <Form.Control
-              type="text"
-              name="address"
-              value={values.address}
+            <Form.Check type="checkbox" id="reset-password-checkbox" label="Reset Password" name="resetPassword"
+              checked={values.resetPassword}
               onChange={handleChange}
             />
-          </Form.Group>
-          <Form.Group as={Col} md="3">
-            <Form.Label>Birthday</Form.Label>
-            <Form.Control
-              type="date"
-              name="birthday"
-              value={values.birthday}
-              onChange={handleChange}
-            />
-          </Form.Group>
-          <Form.Group as={Col} md="3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-            />
-          </Form.Group>
-        </Row>
-
-        <Row className="mb-3">
-          <Form.Group as={Col} md="6">
-            <Form.Label>NIC</Form.Label>
-            <Form.Control type="text" name="nic" value={values.nic} onChange={handleChange} />
           </Form.Group>
         </Row>
 

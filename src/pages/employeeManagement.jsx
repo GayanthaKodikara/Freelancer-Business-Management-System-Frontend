@@ -45,6 +45,19 @@ function EmployeeMng() {
         }
     };
 
+
+    // Give Employee  Permission
+    const handleGivePermission = async (empId) => {
+        try {
+            await axios.put(`${backendUrl}/employees/remove/${empId}`, { permission: "TRUE" });
+            navigate(`/employeeManagement`);
+            const response = await axios.get(`${backendUrl}/employees`);
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error Giving permission:', error);
+        }
+    };
+    
     return (
         <Container fluid>
             <Row className="mb-3">
@@ -93,7 +106,7 @@ function EmployeeMng() {
                                         </Button>
                                     </td>
                                     <td>
-                                        {employee.permission ? (
+                                        {employee.permission === "TRUE" ? (
                                             <Button
                                                 onClick={() => handleRemovePermission(employee.emp_id)}
                                                 variant="danger"
@@ -102,7 +115,9 @@ function EmployeeMng() {
                                                 Remove
                                             </Button>
                                         ) : (
-                                            <Button variant="secondary" size="sm" disabled>
+                                            <Button
+                                                onClick={() => handleGivePermission(employee.emp_id)}
+                                                variant="secondary" size="sm" >
                                                 Removed
                                             </Button>
                                         )}

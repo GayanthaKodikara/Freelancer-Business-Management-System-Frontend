@@ -3,7 +3,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import './loginPage.css'
 
-
+// kamala@gmail.com	915432109V
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -32,7 +32,7 @@ function Login() {
             console.log(response.data); // Log the response data user data from response.data.user
 
             // Check for admin role and redirect accordingly
-            if (response.data.user && response.data.user.id === 2) {
+            if (response.data.user && response.data.user.permission == "TRUE") {
                 window.location.href = '/employeeManagement'; // (this can be done by 'react-router-dom';)
             } else {
                 console.log("Permission Removed")
