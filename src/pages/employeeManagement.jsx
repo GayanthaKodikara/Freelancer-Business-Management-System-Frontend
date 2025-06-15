@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function EmployeeMng() {
     const [employees, setEmployees] = useState([]);
@@ -12,7 +13,7 @@ function EmployeeMng() {
     useEffect(() => {
         const fetchEmployees = async () => {
             try {
-                const response = await axios.get(`${backendUrl}/employees`);
+                const response = await api.get('/employees');
                 setEmployees(response.data);
             } catch (error) {
                 console.error('Error fetching employees:', error);
@@ -37,7 +38,7 @@ function EmployeeMng() {
         try {
             await axios.put(`${backendUrl}/employees/remove/${empId}`, { permission: "FALSE" });
             navigate(`/employeeManagement`);
-            // After removing permission, refresh the employee list
+            alert("Successfully Removed employee ID " + empId)
             const response = await axios.get(`${backendUrl}/employees`);
             setEmployees(response.data);
         } catch (error) {
@@ -50,7 +51,9 @@ function EmployeeMng() {
     const handleGivePermission = async (empId) => {
         try {
             await axios.put(`${backendUrl}/employees/remove/${empId}`, { permission: "TRUE" });
+            
             navigate(`/employeeManagement`);
+            alert("Successfully Give Permission for employee ID " + empId)
             const response = await axios.get(`${backendUrl}/employees`);
             setEmployees(response.data);
         } catch (error) {

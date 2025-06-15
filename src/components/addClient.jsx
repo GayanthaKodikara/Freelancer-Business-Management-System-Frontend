@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col, Row, Container } from 'react-bootstrap';
 import axios from 'axios';
 
-const AddProject = () => {
+const AddClient = () => {
     const [formData, setFormData] = useState({
-              
         client_id: '',
         first_name: '',
         last_name: '',
@@ -12,7 +11,6 @@ const AddProject = () => {
         company: '',
         email: '',
         contact_nu: '',
-
     });
 
     const handleChange = (e) => {
@@ -23,21 +21,13 @@ const AddProject = () => {
         }));
     };
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
         try {
-            const projectResponse = await axios.post(`${backendUrl}/projects`, { 
-                proj_id: formData.proj_id,
-                proj_name: formData.proj_name,
-                start_date: formData.start_date,
-                end_date: formData.end_date,
-                status: formData.status,
-                proj_type: formData.proj_type,
-            });
-
-            const clientResponse = await axios.post(`${backendUrl}/clients`, {  
+            // Making API call specifically for clients
+            const clientResponse = await axios.post(`${backendUrl}/clients`, {
                 client_id: formData.client_id,
                 first_name: formData.first_name,
                 last_name: formData.last_name,
@@ -47,18 +37,11 @@ const AddProject = () => {
                 contact_nu: formData.contact_nu,
             });
 
-            console.log('Project Data Submitted:', projectResponse.data);
             console.log('Client Data Submitted:', clientResponse.data);
-            alert('Project and Client Data Submitted Successfully!'); 
+            alert('Client Data Submitted Successfully!');
 
-            //clear form
+            // Clear the form after successful submission
             setFormData({
-                proj_id: '',
-                proj_name: '',
-                start_date: '',
-                end_date: '',
-                status: '',
-                proj_type: '',
                 client_id: '',
                 first_name: '',
                 last_name: '',
@@ -66,103 +49,22 @@ const AddProject = () => {
                 company: '',
                 email: '',
                 contact_nu: '',
-            })
+            });
 
         } catch (error) {
-            console.error('Error submitting data:', error);
-            alert('Error Submitting Data.  Check console for details.');
+            console.error('Error submitting client data:', error);
+            // More user-friendly error message
+            alert('Error Submitting Client Data. Please check the console for details.');
         }
     };
 
     return (
-        <Form onSubmit={handleSubmit} className="p-4">
-            <Row>
-                <Col md={6}>
-                    <h2 className="mb-4">Project Information</h2>
+        <Container className="my-5 p-4 border rounded shadow-sm">
+            <h2 className="mb-4 text-center">Add New Client</h2>
+            <Form onSubmit={handleSubmit} className="p-4">
+                
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="proj_id">
-                            <Form.Label>Project ID</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="proj_id"
-                                value={formData.proj_id}
-                                onChange={handleChange}
-                                placeholder="Enter Project ID"
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="proj_name">
-                            <Form.Label>Project Name</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="proj_name"
-                                value={formData.proj_name}
-                                onChange={handleChange}
-                                placeholder="Enter Project Name"
-                                required
-                            />
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="start_date">
-                            <Form.Label>Start Date</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="start_date"
-                                value={formData.start_date}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="end_date">
-                            <Form.Label>End Date</Form.Label>
-                            <Form.Control
-                                type="date"
-                                name="end_date"
-                                value={formData.end_date}
-                                onChange={handleChange}
-                                required
-                            />
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="status">
-                            <Form.Label>Status</Form.Label>
-                            <Form.Select
-                                name="status"
-                                value={formData.status}
-                                onChange={handleChange}
-                                required
-                            >
-                                <option value="">Select Status</option>
-                                <option value="Not Started">Not Started</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Completed">Completed</option>
-                                <option value="On Hold">On Hold</option>
-                            </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group as={Col} controlId="proj_type">
-                            <Form.Label>Project Type</Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="proj_type"
-                                value={formData.proj_type}
-                                onChange={handleChange}
-                                placeholder="e.g., Web Development"
-                                required
-                            />
-                        </Form.Group>
-                    </Row>
-                </Col>
-                <Col md={6}>
-                    <h2 className="mb-4">Client Information</h2>
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="client_id">
+                        <Form.Group as={Col} md="6" controlId="client_id">
                             <Form.Label>Client ID</Form.Label>
                             <Form.Control
                                 type="text"
@@ -174,7 +76,7 @@ const AddProject = () => {
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col} controlId="first_name">
+                        <Form.Group as={Col} md="6" controlId="first_name">
                             <Form.Label>First Name</Form.Label>
                             <Form.Control
                                 type="text"
@@ -189,7 +91,7 @@ const AddProject = () => {
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="last_name">
+                        <Form.Group as={Col} md="6" controlId="last_name">
                             <Form.Label>Last Name</Form.Label>
                             <Form.Control
                                 type="text"
@@ -198,10 +100,11 @@ const AddProject = () => {
                                 onChange={handleChange}
                                 placeholder="Enter Last Name"
                                 required
+                                autoComplete="last_name"
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col} controlId="country">
+                        <Form.Group as={Col} md="6" controlId="country">
                             <Form.Label>Country</Form.Label>
                             <Form.Control
                                 type="text"
@@ -215,7 +118,7 @@ const AddProject = () => {
                     </Row>
 
                     <Row className="mb-3">
-                        <Form.Group as={Col} controlId="company">
+                        <Form.Group as={Col} md="6" controlId="company">
                             <Form.Label>Company</Form.Label>
                             <Form.Control
                                 type="text"
@@ -223,11 +126,11 @@ const AddProject = () => {
                                 value={formData.company}
                                 onChange={handleChange}
                                 placeholder="Enter Company"
-                                autoComplete="company"
+                                autoComplete="organization" // Better autoComplete for company
                             />
                         </Form.Group>
 
-                        <Form.Group as={Col} controlId="email">
+                        <Form.Group as={Col} md="6" controlId="email">
                             <Form.Label>Email</Form.Label>
                             <Form.Control
                                 type="email"
@@ -241,26 +144,25 @@ const AddProject = () => {
                         </Form.Group>
                     </Row>
                     <Row>
-                        <Form.Group as={Col} controlId="contact_nu">
+                        <Form.Group as={Col} md="6" controlId="contact_nu">
                             <Form.Label>Contact Number</Form.Label>
                             <Form.Control
-                                type="text"
+                                type="tel" // Changed to 'tel' for phone numbers
                                 name="contact_nu"
                                 value={formData.contact_nu}
                                 onChange={handleChange}
                                 placeholder="Enter Contact Number"
+                                autoComplete="tel"
                             />
                         </Form.Group>
+                        <Col></Col> {/* Empty column to balance the layout */}
                     </Row>
-                </Col>
-            </Row>
-
-            <Button variant="primary" type="submit" className="mt-4">
-                Submit
-            </Button>
-        </Form>
+                <Button variant="primary" type="submit" className="mt-4">
+                    Add Client
+                </Button>
+            </Form>
+        </Container>
     );
 };
 
 export default AddClient;
-

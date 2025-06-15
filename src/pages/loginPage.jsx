@@ -33,6 +33,7 @@ function Login() {
 
             // Check for admin role and redirect accordingly
             if (response.data.user && response.data.user.permission == "TRUE") {
+                await verifyToken();
                 window.location.href = '/employeeManagement'; // (this can be done by 'react-router-dom';)
             } else {
                 console.log("Permission Removed")
@@ -49,6 +50,32 @@ function Login() {
             console.error('Login error:', err); // Log the error
             console.error(err.response.data.error);
             alert('Login error: ' + err.response.data.error);
+        }
+    };
+
+
+    const verifyToken = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.log("No token found.");
+            return;
+        }
+
+        try {
+            const backendUrl = import.meta.env.VITE_BACKEND_URL;
+            const response = await axios.get(`${backendUrl}/verify-token`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+
+            console.log("Token is valid:", response.data);
+            
+        } catch (error) {
+            console.error("Token verification failed:", error.response?.data || error.message);
+            alert("Session expired or unauthorized. Please login again.");
+            localStorage.removeItem('token');
+            window.location.href = '/'; 
         }
     };
 

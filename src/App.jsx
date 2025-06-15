@@ -7,26 +7,26 @@ import AddEmployee from './components/addEmployee';
 import UpdateEmployee from './components/updateEmployee';
 import ProjectManagement from './pages/projectManagement';
 import AddProject from './components/addProject';
-import { AuthProvider } from './components/AuthContext'; 
-import ProtectedRoute from './components/ProtectedRoute'; 
+import ClientMng from './pages/clientManagement';
+import AddClient from './components/addClient';
 
 function App() {
     return (
         <BrowserRouter>
-            <AuthProvider>
-                <Routes>
-                    <Route path="/" element={<Login />} />
-                    <Route element={<ProtectedRoute />}>
-                        <Route path="/employeeManagement" element={<EmployeeMng />} />
-                        <Route path="/inventoryManagement" element={<InventoryMng />} />
-                        <Route path="/employeeManagement/addEmployee" element={<AddEmployee />} />
-                        <Route path="/employeeManagement/updateEmployee/:empId" element={<UpdateEmployee />} />
-                        <Route path="/projectManagement" element={<ProjectManagement />} />
-                        <Route path="/projectManagement/addProject" element={<AddProject />} />
-                    </Route>
-                    <Route path="*" element={<h1>404 - Page Not Found</h1>} />
-                </Routes>
-            </AuthProvider>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route >
+                    <Route path="/employeeManagement" element={<EmployeeMng />} />
+                    <Route path="/inventoryManagement" element={<InventoryMng />} />
+                    <Route path="/clientManagement" element={<ClientMng />} />
+                    <Route path="/clientManagement/addClient" element={<AddClient />} />
+                    <Route path="/employeeManagement/addEmployee" element={<AddEmployee />} />
+                    <Route path="/employeeManagement/updateEmployee/:empId" element={<UpdateEmployee />} />
+                    <Route path="/projectManagement" element={<ProjectManagement />} />
+                    <Route path="/projectManagement/addProject" element={<AddProject />} />
+                </Route>
+                <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+            </Routes>
         </BrowserRouter>
     );
 }
