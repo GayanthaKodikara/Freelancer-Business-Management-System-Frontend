@@ -2,13 +2,14 @@ import { Card, Container, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
 import './loginPage.css'
+import { useNavigate } from 'react-router-dom';
 
 // kamala@gmail.com	915432109V
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
@@ -30,11 +31,11 @@ function Login() {
 
             localStorage.setItem('token', response.data.token); //Store the token
             console.log(response.data); // Log the response data user data from response.data.user
+            await verifyToken();
 
             // Check for admin role and redirect accordingly
             if (response.data.user && response.data.user.permission == "TRUE") {
-                await verifyToken();
-                window.location.href = '/employeeManagement'; // (this can be done by 'react-router-dom';)
+                navigate('/employeeManagement');
             } else {
                 console.log("Permission Removed")
                 alert('Permission denied. Please contact your administrator')
