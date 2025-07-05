@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Table, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
+
 
 function ProjectMng() {
     const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND_URL; 
 
-    // fetch employee details from backend
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await axios.get(`${backendUrl}/projects`);
+                const response = await api.get(`/projects`);
                 setProjects(response.data);
             } catch (error) {
                 console.error('Error fetching Projects:', error);
             }
         };
-
         fetchProjects();
-    }, [backendUrl]); // Add backendUrl to the dependency array
+    }, [navigate]);
 
-    // Redirect to Add Employee Page
-    const handleAddProject = () => {
+
+    const handleAddProject = async () => {
         navigate(`/projectManagement/addProject`);
     };
 
 
-   
+
     return (
         <Container fluid>
             <Row className="mb-3">
@@ -49,7 +47,7 @@ function ProjectMng() {
                                 <th>Start Date</th>
                                 <th>End Date</th>
                                 <th>Status</th>
-                                <th>Project Type</th>
+                                <th>Remarks</th>
                                 <th>Update Project</th>
                             </tr>
                         </thead>

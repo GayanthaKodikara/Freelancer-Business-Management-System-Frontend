@@ -3,9 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import axios from 'axios';
+import api from '../api';
+import VerifyToken from './verifyToken';
+import { useNavigate } from 'react-router-dom';
+
+
 
 function AddEmployee() {
+
+    const navigate = [useNavigate]
     const [values, setValues] = useState({
         empId: '',
         firstName: '',
@@ -29,10 +35,9 @@ function AddEmployee() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
+       
         try {
-            const response = await axios.post(`${backendUrl}/employees`, {
+            const response = await api.post(`/employees`, {
                 empId: values.empId,
                 first_name: values.firstName,
                 last_name: values.lastName,
@@ -129,24 +134,14 @@ function AddEmployee() {
                             onChange={handleChange}
                         >
                             <option value="">Select Workshop</option>
-                            <option value="Workshop A">Workshop A</option>
-                            <option value="Workshop B">Workshop B</option>
-                            <option value="Workshop C">Workshop C</option>
+                            <option value="Head Office Thalawa">Head Office (Thalawa)</option>
+                            <option value="Workshop A Thalawa">Workshop A (Thalawa)</option>
+                            <option value="Workshop B Anuradhapura">Workshop B (Anuradhapura)</option>
+                            <option value="Workshop C Anuradhapura">Workshop C (Anuradhapura)</option>
+                            <option value="Work From Home Employee">Work From Home Employee</option>
                         </Form.Select>
                     </Form.Group>
-                    <Form.Group as={Col} md="4">
-                        <Form.Label>Design Category</Form.Label>
-                        <Form.Select
-                            name="designCategory"
-                            value={values.designCategory}
-                            onChange={handleChange}
-                        >
-                            <option value="">Select Category</option>
-                            <option value="Graphic Design">Graphic Design</option>
-                            <option value="Web Design">Web Design</option>
-                            <option value="3D Modeling">3D Modeling</option>
-                        </Form.Select>
-                    </Form.Group>
+
                     <Form.Group as={Col} md="4">
                         <Form.Label>Role</Form.Label>
                         <Form.Select
@@ -155,13 +150,33 @@ function AddEmployee() {
                             onChange={handleChange}
                         >
                             <option value="">Select Role</option>
-                            <option value="Carpenter">Carpenter</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="Customer Support Engineer">Customer Support Engineer</option>
+                            <option value="Project Manager">Project Manager</option>
+                            <option value="Workshop Supervisour">Workshop Supervisour</option>
                             <option value="Designer">Designer</option>
-                            <option value="Manager">Manager</option>
+                            <option value="Fabricator">Fabricator</option>
+
                         </Form.Select>
                     </Form.Group>
+
+                    {values.role === 'Designer' && (
+                        <Form.Group as={Col} md="4">
+                            <Form.Label>Design Category</Form.Label>
+                            <Form.Select
+                                name="designCategory"
+                                value={values.designCategory}
+                                onChange={handleChange}
+                            >
+                                <option value="">Select Category</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Web Design">Web Design</option>
+                                <option value="3D Modeling">3D Modeling</option>
+                            </Form.Select>
+                        </Form.Group>
+                    )}
                 </Row>
-                
+
                 <Button variant="primary" type="submit">
                     Add Employee
                 </Button>

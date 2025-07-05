@@ -1,68 +1,69 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Table, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import api from '../api';
+// import TopupMessage from '../components/topupMesssage';
+
 
 function EmployeeMng() {
     const [employees, setEmployees] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND_URL; // Define backendUrl here
+    const [alerts, setAlert] = useState({ show: false, message: '', variant: '' });
 
-    // fetch employee details from backend
+    const fetchEmployees = async () => {
+        try {
+            const response = await api.get('/employees');
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('Error fetching employees:', error);
+        }
+    };
+
+    // Fetch employee details from backend
     useEffect(() => {
-        const fetchEmployees = async () => {
-            try {
-                const response = await api.get('/employees');
-                setEmployees(response.data);
-            } catch (error) {
-                console.error('Error fetching employees:', error);
-            }
-        };
-
         fetchEmployees();
-    }, [backendUrl]); // Add backendUrl to the dependency array
+    }, []);
 
     // Redirect to Add Employee Page
-    const handleAddEmployee = () => {
+    const handleAddEmployee = async () => {
         navigate(`/employeeManagement/addEmployee`);
     };
 
     // Redirect to Employee Update Page
-    const handleUpdate = (empId) => {
+    const handleUpdate = async (empId) => {
         navigate(`/employeeManagement/updateEmployee/${empId}`);
     };
 
-    // Remove Employee  Permission
+    // Remove Employee Permission
     const handleRemovePermission = async (empId) => {
         try {
-            await axios.put(`${backendUrl}/employees/remove/${empId}`, { permission: "FALSE" });
-            navigate(`/employeeManagement`);
-            alert("Successfully Removed employee ID " + empId)
-            const response = await axios.get(`${backendUrl}/employees`);
-            setEmployees(response.data);
+            await api.put(`/employees/remove/${empId}`, { permission: "FALSE" });
+            fetchEmployees();
+            alert("Successfully Removed permission for employee ID " + empId);
+            // setAlert({ show: true, message: `Successfully Granted permission for employee ID ${empId}`, variant: 'success' });
+
+
         } catch (error) {
             console.error('Error removing permission:', error);
+            // setAlert({ show: true, message: 'Error giving permission', variant: 'danger' });
         }
     };
 
-
-    // Give Employee  Permission
+    // Give Employee Permission
     const handleGivePermission = async (empId) => {
         try {
-            await axios.put(`${backendUrl}/employees/remove/${empId}`, { permission: "TRUE" });
-            
-            navigate(`/employeeManagement`);
-            alert("Successfully Give Permission for employee ID " + empId)
-            const response = await axios.get(`${backendUrl}/employees`);
-            setEmployees(response.data);
+            await api.put(`/employees/remove/${empId}`, { permission: "TRUE" });
+            fetchEmployees();
+            alert("Successfully Granted permission for employee ID " + empId);
+
         } catch (error) {
-            console.error('Error Giving permission:', error);
+            console.error('Error giving permission:', error);
         }
     };
-    
+
     return (
         <Container fluid>
+             {/* {alerts.show && <TopupMessage message={alerts.message} variant={alerts.variant} onClose={() => setAlert({ ...alerts, show: false })} />} */}
             <Row className="mb-3">
                 <Col className="d-flex justify-content-end">
                     <Button onClick={handleAddEmployee} variant="primary">

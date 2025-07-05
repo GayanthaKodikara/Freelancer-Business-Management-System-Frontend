@@ -175,6 +175,7 @@ const AddProject = () => {
      * Navigates the user to the client management page.
      */
     const handleAddClientClick = () => {
+        
         navigate('/clientManagement'); // Programmatically navigate to the /clientManagement route
     };
 

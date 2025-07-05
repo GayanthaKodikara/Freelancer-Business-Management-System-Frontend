@@ -9,13 +9,15 @@ import ProjectManagement from './pages/projectManagement';
 import AddProject from './components/addProject';
 import ClientMng from './pages/clientManagement';
 import AddClient from './components/addClient';
+import PrivateRoute from './components/privateRoute'; 
 
 function App() {
     return (
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Login />} />
-                <Route >
+
+                <Route element={<PrivateRoute />}>
                     <Route path="/employeeManagement" element={<EmployeeMng />} />
                     <Route path="/inventoryManagement" element={<InventoryMng />} />
                     <Route path="/clientManagement" element={<ClientMng />} />
@@ -25,6 +27,7 @@ function App() {
                     <Route path="/projectManagement" element={<ProjectManagement />} />
                     <Route path="/projectManagement/addProject" element={<AddProject />} />
                 </Route>
+
                 <Route path="*" element={<h1>404 - Page Not Found</h1>} />
             </Routes>
         </BrowserRouter>

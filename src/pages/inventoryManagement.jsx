@@ -1,25 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';  
 import { Table, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 function InventoryMng() {
     const [inventory, setInventory] = useState([]);
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    useEffect(() => {
-        const fetchInventory = async () => {
+    const fetchInventory = async () => {
             try {
-                const response = await axios.get(`${backendUrl}/inventory`); // Adjust the API endpoint
+                const response = await api.get(`/inventory`); 
                 setInventory(response.data);
             } catch (error) {
                 console.error('Error fetching inventory:', error);
             }
         };
 
+    useEffect(() => {
         fetchInventory();
-    }, [backendUrl]);
+    }, []);
 
     const handleAddInventory = () => {
         navigate(`/inventory/addInventory`); 

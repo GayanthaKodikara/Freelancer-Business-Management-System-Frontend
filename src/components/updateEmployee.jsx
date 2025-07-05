@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import api from '../api';
+import AlertDismissible from './topupMesssage';
 
 function UpdateEmployee() {
   const { empId } = useParams();
@@ -22,12 +24,11 @@ function UpdateEmployee() {
     role: '',
     resetPassword: false, // Initialize resetPassword state
   });
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const fetchEmployee = async () => {
       try {
-        const response = await axios.get(`${backendUrl}/employees/${empId}`);
+        const response = await api.get(`/employees/${empId}`);
         setValues({
           empId: response.data.emp_id,
           firstName: response.data.first_name,
@@ -48,7 +49,7 @@ function UpdateEmployee() {
     };
 
     fetchEmployee();
-  }, [empId, backendUrl]);
+  }, [empId]);
 
   const handleChange = (event) => {
     const { name, type, checked, value } = event.target;
@@ -74,10 +75,10 @@ function UpdateEmployee() {
       };
 
       if (values.resetPassword) {
-        dataToUpdate.password = values.nic; 
+        dataToUpdate.password = values.nic;
       }
 
-      await axios.put(`${backendUrl}/employees/${values.empId}`, dataToUpdate);
+      await api.put(`/employees/${values.empId}`, dataToUpdate);
       alert('Employee updated successfully!');
       navigate('/employeeManagement');
     } catch (error) {
@@ -160,33 +161,43 @@ function UpdateEmployee() {
               onChange={handleChange}
             >
               <option value="">Select Workshop</option>
-              <option value="Workshop A">Workshop A</option>
-              <option value="Workshop B">Workshop B</option>
-              <option value="Workshop C">Workshop C</option>
+              <option value="Head Office Thalawa">Head Office (Thalawa)</option>
+              <option value="Workshop A Thalawa">Workshop A (Thalawa)</option>
+              <option value="Workshop B Anuradhapura">Workshop B (Anuradhapura)</option>
+              <option value="Workshop C Anuradhapura">Workshop C (Anuradhapura)</option>
+              <option value="Work From Home Employee">Work From Home Employee</option>
             </Form.Select>
           </Form.Group>
-          <Form.Group as={Col} md="4">
-            <Form.Label>Design Category</Form.Label>
-            <Form.Select
-              name="designCategory"
-              value={values.designCategory}
-              onChange={handleChange}
-            >
-              <option value="">Select Category</option>
-              <option value="Graphic Design">Graphic Design</option>
-              <option value="Web Design">Web Design</option>
-              <option value="3D Modeling">3D Modeling</option>
-            </Form.Select>
-          </Form.Group>
+
           <Form.Group as={Col} md="4">
             <Form.Label>Role</Form.Label>
             <Form.Select name="role" value={values.role} onChange={handleChange}>
               <option value="">Select Role</option>
-              <option value="Carpenter">Carpenter</option>
+              <option value="Administrator">Administrator</option>
+              <option value="Customer Support Engineer">Customer Support Engineer</option>
+              <option value="Project Manager">Project Manager</option>
+              <option value="Workshop Supervisour">Workshop Supervisour</option>
               <option value="Designer">Designer</option>
-              <option value="Manager">Manager</option>
+              <option value="Fabricator">Fabricator</option>
             </Form.Select>
           </Form.Group>
+
+          {values.role === 'Designer' && (
+            <Form.Group as={Col} md="4">
+              <Form.Label>Design Category</Form.Label>
+              <Form.Select
+                name="designCategory"
+                value={values.designCategory}
+                onChange={handleChange}
+              >
+                <option value="">Select Category</option>
+                <option value="Graphic Design">Graphic Design</option>
+                <option value="Web Design">Web Design</option>
+                <option value="3D Modeling">3D Modeling</option>
+              </Form.Select>
+            </Form.Group>
+          )}
+
         </Row>
 
         <Row className="mb-3 mt-4">
