@@ -2,24 +2,25 @@ import { Card, Container, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 import axios from 'axios';
 import './loginPage.css'
+import { useNavigate } from 'react-router-dom';
+import VerifyToken from '../components/verifyToken';
 
 
+// kamala@gmail.com	915432109V
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const navigate = useNavigate();
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); //sending the data via AJAX without a page reload
+        e.preventDefault();
         setError('');
         setSuccess('');
 
-        // send 'email' and 'password' to backend and then await for response
         try {
-
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
             const response = await axios.post(`${backendUrl}/login`, {
                 email: email,
@@ -28,12 +29,25 @@ function Login() {
 
             setSuccess(response.data.message);
 
-            localStorage.setItem('token', response.data.token); //Store the token
-            console.log(response.data); // Log the response data user data from response.data.user
+            localStorage.setItem('token', response.data.token);
+            // console.log(response.data);
+            await VerifyToken();
 
             // Check for admin role and redirect accordingly
-            if (response.data.user && response.data.user.id === 2) {
-                window.location.href = '/employeeManagement'; // (this can be done by 'react-router-dom';)
+            if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Administrator") {
+                navigate('/employeeManagement');
+            }
+            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Project Manager") {
+                navigate('/projectManagement');
+            }
+            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Workshop Supervisour") {
+                navigate('/inventoryManagement');
+            }
+            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Designer") {
+                navigate('/projectManagement');
+            }
+            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Customer Support Engineer") {
+                navigate('/projectManagement');
             } else {
                 console.log("Permission Removed")
                 alert('Permission denied. Please contact your administrator')
@@ -80,10 +94,6 @@ function Login() {
                     <Button variant="primary" type="submit">
                         Submit
                     </Button>
-
-                    {/* {error && <div className="text-danger">{error}</div>}
-                    {success && <div className="text-success">{success}</div>} */}
-
                 </Form>
             </Card>
         </Container>
