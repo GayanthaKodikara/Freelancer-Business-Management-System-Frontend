@@ -4,7 +4,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import api from '../api';
-import VerifyToken from './verifyToken';
 import { useNavigate } from 'react-router-dom';
 
 

@@ -10,6 +10,9 @@ import AddProject from './components/addProject';
 import ClientMng from './pages/clientManagement';
 import AddClient from './components/addClient';
 import PrivateRoute from './components/privateRoute'; 
+import AddInventory from './components/addInventory';
+import UpdateInventory from './components/updateInventory';
+
 
 function App() {
     return (
@@ -26,6 +29,8 @@ function App() {
                     <Route path="/employeeManagement/updateEmployee/:empId" element={<UpdateEmployee />} />
                     <Route path="/projectManagement" element={<ProjectManagement />} />
                     <Route path="/projectManagement/addProject" element={<AddProject />} />
+                    <Route path="/inventoryManagement/addInventory" element={<AddInventory/>} />
+                    <Route path="/inventoryManagement/updateInventory/:item_Code" element={<UpdateInventory/>} />
                 </Route>
 
                 <Route path="*" element={<h1>404 - Page Not Found</h1>} />

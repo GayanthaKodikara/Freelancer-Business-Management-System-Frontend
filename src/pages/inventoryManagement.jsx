@@ -21,11 +21,11 @@ function InventoryMng() {
     }, []);
 
     const handleAddInventory = () => {
-        navigate(`/inventory/addInventory`); 
+        navigate(`/inventoryManagement/addInventory`); 
     };
 
-    const handleUpdateInventory = (itemCode) => {
-        navigate(`/inventory/updateInventory/${itemCode}`); 
+    const handleUpdateInventory = (item_Code) => {
+        navigate(`/inventoryManagement/updateInventory/${item_Code}`); 
     };
 
     return (
@@ -48,8 +48,9 @@ function InventoryMng() {
                                 <th>Purchase Date</th>
                                 <th>Price</th>
                                 <th>Shop</th>
-                                <th>Project ID</th>
-                                <th>Availability</th>
+                                <th>Quantity</th>
+                                <th>Available Quantity</th>
+                                <th>Stock Location</th>
                                 <th>Update Inventory</th>
                             </tr>
                         </thead>
@@ -61,8 +62,9 @@ function InventoryMng() {
                                     <td>{new Date(item.purchase_date).toLocaleDateString()}</td>
                                     <td>Rs.{item.price ? parseFloat(item.price).toFixed(2) : ''}</td>
                                     <td>{item.shop}</td>
-                                    <td>{item.proj_id}</td>
-                                    <td>{item.availability ? 'Yes' : 'No'}</td>
+                                    <td>{item.quantity}</td>
+                                    <td>{item.available_quantity}</td>
+                                    <td>{item.location}</td>
                                     <td>
                                         <Button onClick={() => handleUpdateInventory(item.item_code)} variant="success" size="sm">
                                             Update

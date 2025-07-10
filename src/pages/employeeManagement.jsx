@@ -16,6 +16,7 @@ function EmployeeMng() {
             setEmployees(response.data);
         } catch (error) {
             console.error('Error fetching employees:', error);
+            alert('Error fetching employees:', error); 
         }
     };
 
