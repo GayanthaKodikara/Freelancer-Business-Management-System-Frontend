@@ -12,6 +12,7 @@ import AddClient from './components/addClient';
 import PrivateRoute from './components/privateRoute'; 
 import AddInventory from './components/addInventory';
 import UpdateInventory from './components/updateInventory';
+import UpdateProject from './components/updateProject';
 
 
 function App() {
@@ -29,8 +30,9 @@ function App() {
                     <Route path="/employeeManagement/updateEmployee/:empId" element={<UpdateEmployee />} />
                     <Route path="/projectManagement" element={<ProjectManagement />} />
                     <Route path="/projectManagement/addProject" element={<AddProject />} />
+                    <Route path="/projectManagement/updateProject/:project_id" element={<UpdateProject />} />
                     <Route path="/inventoryManagement/addInventory" element={<AddInventory/>} />
-                    <Route path="/inventoryManagement/updateInventory/:item_Code" element={<UpdateInventory/>} />
+                    <Route path="/inventoryManagement/updateInventory/:itemCode" element={<UpdateInventory/>} />
                 </Route>
 
                 <Route path="*" element={<h1>404 - Page Not Found</h1>} />

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api';
 
 function UpdateInventory() {
     const navigate = useNavigate();
-    const { itemCode } = useParams(); 
+    const { itemCode } = useParams();
     const [formData, setFormData] = useState({
+        itemCode: itemCode || '',
         name: '',
         shop: '',
         buying_date: '',
@@ -19,33 +20,21 @@ function UpdateInventory() {
         const fetchItem = async () => {
             try {
                 const response = await api.get(`/inventory/${itemCode}`);
-                const itemData = response.data;
-
-                // Format the date for the input field (YYYY-MM-DD)
-                const formattedDate = itemData.purchase_date
-                    ? new Date(itemData.purchase_date).toISOString().split('T')[0]
-                    : '';
-
                 setFormData({
-                    name: itemData.item_name || '', // Use item_name from backend
-                    shop: itemData.shop || '',
-                    buying_date: formattedDate,
-                    price: itemData.price !== undefined ? itemData.price : '',
-                    quantity: itemData.quantity !== undefined ? itemData.quantity : '',
-                    available_quantity: itemData.available_quantity !== undefined ? itemData.available_quantity : '',
-                    location: itemData.location || ''
+                    name: response.data.item_name,
+                    shop: response.data.shop,
+                    buying_date: response.data.buying_date ? response.data.buying_date.substring(0, 10) : '',
+                    price: response.data.price,
+                    quantity: response.data.quantity,
+                    location: response.data.location
                 });
             } catch (err) {
                 console.error('Error fetching inventory item for update:', err);
-               
+                alert('Could not find inventory with this code.');
             }
         };
+        fetchItem();
 
-        if (itemCode) {
-            fetchItem();
-        } else {
-            console.error('No item code provided for update.');
-        }
     }, [itemCode]); // Re-run when itemCode changes
 
     const handleChange = (e) => {
@@ -56,35 +45,32 @@ function UpdateInventory() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Basic validation (ensure consistency with AddInventory and backend)
-        if (!formData.name || !formData.buying_date || !formData.price || !formData.quantity || !formData.available_quantity || !formData.location) {
-            console.error('Please fill in all required fields (Name, Buying Date, Price, Quantity, Available Quantity, Location).');
-            return;
-        }
-
         try {
             // Ensure price, quantity, and available_quantity are numbers
             const dataToSend = {
                 ...formData,
                 price: parseFloat(formData.price),
                 quantity: parseInt(formData.quantity, 10),
-                available_quantity: parseInt(formData.available_quantity, 10),
+                // available_quantity: parseInt(formData.available_quantity, 10),
             };
 
-            const response = await api.put(`/inventory/${itemCode}`, dataToSend);
-
+            await api.put(`/inventory/${itemCode}`, dataToSend);
+            alert('Inventory updated successfully!');
+            navigate('/inventoryManagement');
         } catch (err) {
             console.error('Error updating inventory:', err);
+            alert('Error updating inventory.');
         }
     };
 
     return (
         <Container className="my-4">
             <Row className="justify-content-md-center">
-                <Col md={8} lg={6}>
-                    <h2>Update Inventory Item (Code: {itemCode})</h2>
-                    
+                <Col md={12}>
+                    <h2>Update Inventory Item </h2>
+
                     <Form onSubmit={handleSubmit}>
+
                         <Row className="mb-3">
                             <Form.Group as={Col} md="6" controlId="formName">
                                 <Form.Label>Item Name </Form.Label>
@@ -148,37 +134,21 @@ function UpdateInventory() {
                                     required
                                 />
                             </Form.Group>
-
-                            <Form.Group as={Col} md="6" controlId="formAvailableQuantity">
-                                <Form.Label>Available Quantity </Form.Label>
+                            <Form.Group as={Col} md="6" controlId="formLocation">
+                                <Form.Label>Stock Location </Form.Label>
                                 <Form.Control
-                                    type="number"
-                                    name="available_quantity"
-                                    value={formData.available_quantity}
+                                    type="text"
+                                    name="location"
+                                    value={formData.location}
                                     onChange={handleChange}
-                                    placeholder="Enter available quantity"
+                                    placeholder="Enter stock location"
                                     required
                                 />
                             </Form.Group>
                         </Row>
 
-                        <Form.Group className="mb-3" controlId="formLocation">
-                            <Form.Label>Stock Location </Form.Label>
-                            <Form.Control
-                                type="text"
-                                name="location"
-                                value={formData.location}
-                                onChange={handleChange}
-                                placeholder="Enter stock location"
-                                required
-                            />
-                        </Form.Group>
-
                         <Button variant="success" type="submit" className="me-2">
                             Update Inventory
-                        </Button>
-                        <Button variant="secondary" onClick={() => navigate('/inventory')}>
-                            Cancel
                         </Button>
                     </Form>
                 </Col>

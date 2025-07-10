@@ -24,7 +24,9 @@ function ProjectMng() {
     const handleAddProject = async () => {
         navigate(`/projectManagement/addProject`);
     };
-
+    const handleUpdate = async (proj_id) => {
+        navigate(`/projectManagement/updateProject/${proj_id}`);
+    };
 
 
     return (
@@ -48,7 +50,9 @@ function ProjectMng() {
                                 <th>End Date</th>
                                 <th>Status</th>
                                 <th>Remarks</th>
+                                <th>Project Detail URL</th>
                                 <th>Update Project</th>
+                                <th>Project Breakdown</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,10 +63,18 @@ function ProjectMng() {
                                     <td>{new Date(project.start_date).toLocaleDateString()}</td>
                                     <td>{new Date(project.end_date).toLocaleDateString()}</td>
                                     <td>{project.status}</td>
-                                    <td>{project.proj_type}</td>
+                                    <td>{project.remarks}</td>
+                                    <td><a href={project.url} target="_blank" rel="noopener noreferrer">
+                                        Link
+                                    </a></td>
                                     <td>
                                         <Button onClick={() => handleUpdate(project.proj_id)} variant="success" size="sm">
                                             Update
+                                        </Button>
+                                    </td>
+                                    <td>
+                                        <Button onClick={() => navigate(`/projectManagement/breakdown/${project.proj_id}`)} variant="success" size="sm">
+                                            Breakdown
                                         </Button>
                                     </td>
                                 </tr>
