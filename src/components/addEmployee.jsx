@@ -168,9 +168,14 @@ function AddEmployee() {
                                 onChange={handleChange}
                             >
                                 <option value="">Select Category</option>
-                                <option value="Graphic Design">Graphic Design</option>
-                                <option value="Web Design">Web Design</option>
+                                <option value="Mechanical Design">Mechanical Design</option>
+                                <option value="Electrical Design">Electrical Design</option>
                                 <option value="3D Modeling">3D Modeling</option>
+                                <option value="Reverse Engineering">Reverse Engineering</option>
+                                <option value="Graphic Design">Graphic Design</option>
+                                <option value="Civil Design">Civil Design</option>
+                                <option value="PCB Design">PCB Design</option>
+                                
                             </Form.Select>
                         </Form.Group>
                     )}
