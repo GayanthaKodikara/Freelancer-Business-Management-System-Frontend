@@ -12,13 +12,9 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
-    const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccess('');
 
         try {
             const backendUrl = import.meta.env.VITE_BACKEND_URL;
@@ -27,7 +23,7 @@ function Login() {
                 password: password,
             });
 
-            setSuccess(response.data.message);
+            console.log(response.data.message);
 
             localStorage.setItem('token', response.data.token);
             // console.log(response.data);
@@ -40,7 +36,7 @@ function Login() {
             else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Project Manager") {
                 navigate('/projectManagement');
             }
-            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Workshop Supervisour") {
+            else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Workshop Supervisor") {
                 navigate('/inventoryManagement');
             }
             else if (response.data.user && response.data.user.permission == "TRUE" && response.data.user.role == "Designer") {
@@ -56,9 +52,9 @@ function Login() {
 
         } catch (err) {
             if (err.response && err.response.data && err.response.data.error) {
-                setError(err.response.data.error);
+                console.error(err.response.data.error);
             } else {
-                setError('An error occurred. Please try again.');
+                 console.error('An error occurred. Please try again.');
             }
             console.error('Login error:', err); // Log the error
             console.error(err.response.data.error);

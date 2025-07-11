@@ -1,12 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { Form, Button, Col, Row, Container, ListGroup } from 'react-bootstrap'; // Removed Alert, Spinner for minimalism
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../api';
 
 const AddProject = () => {
     // --- State Management ---
     const [formData, setFormData] = useState({
-        proj_id: '',
+        // proj_id: '',
         proj_name: '',
         start_date: '',
         end_date: '',
@@ -22,7 +22,6 @@ const AddProject = () => {
     const debounceTimeoutRef = useRef(null);
 
     const navigate = useNavigate();
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     // --- Event Handlers ---
 
@@ -45,7 +44,7 @@ const AddProject = () => {
 
                 debounceTimeoutRef.current = setTimeout(async () => {
                     try {
-                        const response = await axios.get(`${backendUrl}/clients/suggestions?query=${value}`);
+                        const response = await api.get(`/clients/suggestions?query=${value}`);
                         setClientSuggestions(response.data);
                     } catch (err) {
                         console.error('Error fetching client suggestions:', err);
@@ -75,7 +74,7 @@ const AddProject = () => {
 
         try {
             const projectDataToSubmit = {
-                proj_id: formData.proj_id,
+                // proj_id: formData.proj_id,
                 proj_name: formData.proj_name,
                 start_date: formData.start_date,
                 end_date: formData.end_date,
@@ -85,13 +84,13 @@ const AddProject = () => {
                 client_id: formData.client_id,
             };
 
-            const projectResponse = await axios.post(`${backendUrl}/projects`, projectDataToSubmit);
+            const projectResponse = await api.post(`/projects`, projectDataToSubmit);
 
             console.log('Project Data Submitted Successfully:', projectResponse.data);
             alert('Project added successfully!'); 
 
             setFormData({
-                proj_id: '',
+                // proj_id: '',
                 proj_name: '',
                 start_date: '',
                 end_date: '',
@@ -120,10 +119,10 @@ const AddProject = () => {
             <Form onSubmit={handleSubmit}>
                 {/* Project ID and Name Row */}
                 <Row className="mb-3">
-                    <Form.Group as={Col} md="6" controlId="proj_id">
+                    {/* <Form.Group as={Col} md="6" controlId="proj_id">
                         <Form.Label>Project ID</Form.Label>
                         <Form.Control type="text" name="proj_id" value={formData.proj_id} onChange={handleChange} placeholder="Enter Project ID" required />
-                    </Form.Group>
+                    </Form.Group> */}
                     <Form.Group as={Col} md="6" controlId="proj_name">
                         <Form.Label>Project Name</Form.Label>
                         <Form.Control type="text" name="proj_name" value={formData.proj_name} onChange={handleChange} placeholder="Enter Project Name" required />

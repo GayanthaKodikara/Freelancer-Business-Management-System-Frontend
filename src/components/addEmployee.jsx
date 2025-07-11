@@ -34,7 +34,7 @@ function AddEmployee() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-       
+
         try {
             const response = await api.post(`/employees`, {
                 empId: values.empId,
@@ -51,10 +51,10 @@ function AddEmployee() {
             });
 
             console.log('Employee added successfully:', response.data);
-
+            alert('Employee added successfully')
         } catch (error) {
             console.error('Error adding employee:', error);
-
+            alert('Error Adding Employee: ' + (error?.response?.data?.error || 'Unknown error occurred'));
         }
     };
 
@@ -152,7 +152,7 @@ function AddEmployee() {
                             <option value="Administrator">Administrator</option>
                             <option value="Customer Support Engineer">Customer Support Engineer</option>
                             <option value="Project Manager">Project Manager</option>
-                            <option value="Workshop Supervisour">Workshop Supervisour</option>
+                            <option value="Workshop Supervisor">Workshop Supervisor</option>
                             <option value="Designer">Designer</option>
                             <option value="Fabricator">Fabricator</option>
 

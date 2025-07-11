@@ -81,7 +81,7 @@ function UpdateEmployee() {
       navigate('/employeeManagement');
     } catch (error) {
       console.error('Error updating employee:', error);
-      alert('Error updating employee.');
+      alert('Error Updating Employee: ' + (error?.response?.data?.error || 'Unknown error occurred'));
     }
   };
 
@@ -174,7 +174,7 @@ function UpdateEmployee() {
               <option value="Administrator">Administrator</option>
               <option value="Customer Support Engineer">Customer Support Engineer</option>
               <option value="Project Manager">Project Manager</option>
-              <option value="Workshop Supervisour">Workshop Supervisour</option>
+              <option value="Workshop Supervisor">Workshop Supervisor</option>
               <option value="Designer">Designer</option>
               <option value="Fabricator">Fabricator</option>
             </Form.Select>
