@@ -6,7 +6,6 @@ import api from '../api';
 
 const ClientList = () => {
     const [clients, setClients] = useState([]);
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
     const fetchClients = async () => {
@@ -15,7 +14,7 @@ const ClientList = () => {
                 setClients(response.data);
             } catch (err) {
                 console.error('Error fetching clients:', err);
-                setError('Failed to load clients. Please try again later.');
+                alert('Failed to load clients. Please try again later.');
             }
         };
 

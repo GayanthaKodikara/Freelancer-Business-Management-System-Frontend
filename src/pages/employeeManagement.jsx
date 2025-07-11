@@ -46,7 +46,7 @@ function EmployeeMng() {
 
         } catch (error) {
             console.error('Error removing permission:', error);
-            // setAlert({ show: true, message: 'Error giving permission', variant: 'danger' });
+            alert('Error removing permission:'+ (error?.response?.data?.error || 'Unknown error occurred'));
         }
     };
 
@@ -59,6 +59,7 @@ function EmployeeMng() {
 
         } catch (error) {
             console.error('Error giving permission:', error);
+            alert('Error giving permission:'+ (error?.response?.data?.error || 'Unknown error occurred'));
         }
     };
 
