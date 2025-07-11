@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Form, Button, Col, Row, Container, ListGroup } from 'react-bootstrap';
-import axios from 'axios'; // Assuming 'api' is also an axios instance
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../api';
 

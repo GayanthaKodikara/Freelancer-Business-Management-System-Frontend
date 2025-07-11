@@ -13,6 +13,7 @@ import PrivateRoute from './components/privateRoute';
 import AddInventory from './components/addInventory';
 import UpdateInventory from './components/updateInventory';
 import UpdateProject from './components/updateProject';
+import ProjectBreakdownDetails from './components/projectBreakdown';
 
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/projectManagement" element={<ProjectManagement />} />
                     <Route path="/projectManagement/addProject" element={<AddProject />} />
                     <Route path="/projectManagement/updateProject/:project_id" element={<UpdateProject />} />
+                    <Route path="/projectManagement/breakdown/:proj_id" element={<ProjectBreakdownDetails />} />
                     <Route path="/inventoryManagement/addInventory" element={<AddInventory/>} />
                     <Route path="/inventoryManagement/updateInventory/:itemCode" element={<UpdateInventory/>} />
                 </Route>

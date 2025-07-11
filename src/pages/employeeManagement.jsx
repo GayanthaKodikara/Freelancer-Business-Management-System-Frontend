@@ -8,7 +8,7 @@ import api from '../api';
 function EmployeeMng() {
     const [employees, setEmployees] = useState([]);
     const navigate = useNavigate();
-    const [alerts, setAlert] = useState({ show: false, message: '', variant: '' });
+    // const [alerts, setAlert] = useState({ show: false, message: '', variant: '' });
 
     const fetchEmployees = async () => {
         try {

@@ -23,7 +23,6 @@ function AddInventory() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-
         // Basic validation
         if (!formData.name || !formData.buying_date || !formData.price || !formData.quantity || !formData.location) {
             setError('Please fill in all required fields (Name, Buying Date, Price, Quantity, Location).');
@@ -31,9 +30,8 @@ function AddInventory() {
         }
 
         try {
-
             const response = await api.post('/inventory', dataToSend);
-            setSuccess('Inventory item added successfully!');
+            alert('Inventory item added successfully!');
             setFormData({
                 name: '',
                 shop: '',
@@ -45,7 +43,7 @@ function AddInventory() {
 
         } catch (err) {
             console.error('Error adding inventory:', err);
-            setError('Failed to add inventory. Please try again. ' + (err.response?.data?.message || err.message));
+            alert('Failed to add inventory. Please try again. ' + (err.response?.data?.message || err.message));
         }
     };
 
@@ -119,17 +117,17 @@ function AddInventory() {
                             />
                         </Form.Group>
 
-                    <Form.Group as={Col} md="6">
-                        <Form.Label>Stock Location </Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            placeholder="Enter stock location"
-                            required
-                        />
-                    </Form.Group>
+                        <Form.Group as={Col} md="6">
+                            <Form.Label>Stock Location </Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="location"
+                                value={formData.location}
+                                onChange={handleChange}
+                                placeholder="Enter stock location"
+                                required
+                            />
+                        </Form.Group>
                     </Row>
 
                     <Button variant="primary" type="submit" className="me-2">
